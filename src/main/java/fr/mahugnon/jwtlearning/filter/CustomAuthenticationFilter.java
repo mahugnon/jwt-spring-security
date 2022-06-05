@@ -1,7 +1,5 @@
 package fr.mahugnon.jwtlearning.filter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import fr.mahugnon.jwtlearning.utilities.JWTUtils;
@@ -17,13 +15,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -48,8 +44,8 @@ private final AuthenticationManager authenticationManager;
         User user = (User)authentication.getPrincipal();
         var jwtUtils = new JWTUtils();  
        String issuer =  request.getRequestURL().toString();
-       String accessToken  = jwtUtils.generateToken(user, new Date(System.currentTimeMillis()+(10*60*1000)), issuer);
-       String refreshToken = jwtUtils.generateToken(user, new Date(System.currentTimeMillis()+(30*60*1000)), issuer);
+       String accessToken  = jwtUtils.generateToken(user, new Date(System.currentTimeMillis()+(10*60*1000)), issuer,false);
+       String refreshToken = jwtUtils.generateToken(user, new Date(System.currentTimeMillis()+(30*60*1000)), issuer,true);
        Token token = new Token(accessToken, refreshToken);
        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
        new ObjectMapper().writeValue(response.getOutputStream(),token);
