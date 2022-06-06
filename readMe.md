@@ -50,7 +50,7 @@ Two packages : `security` and `filters`
 - Security package includes 
   - `SecurityConfig` class
 #### SecurityConfig
-- Implements `IbSecurityConfigurerAdapter`
+- Extends `WebSecurityConfigurerAdapter`
 - Override the method `protected void configure(AuthenticationManagerBuilder auth) throws Exception` 
 ```java
     @Override
